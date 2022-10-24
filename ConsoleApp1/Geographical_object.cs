@@ -2,10 +2,10 @@ namespace ConsoleApp1;
 
 public interface IGeographical_object
 {
-    string x { get; set; }
-    string y { get; set; }
-    string name { get; set; }
-    string desc { get; set; }
+    string X { get; }
+    string Y { get; }
+    string Name { get; }
+    string Desc { get; }
     void GetInfo();
 }
 
