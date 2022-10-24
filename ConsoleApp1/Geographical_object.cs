@@ -1,79 +1,67 @@
 namespace ConsoleApp1;
 
-public abstract class Geographical_object
-{
-    public string x { get; }
-    public string y { get; }
-    
-    private string _name;
+	public abstract class Geographical_object
+	{
+		public string X { get; }
+		public string Y { get; }
+		public string Name { get; }
+		public string Description { get; }
+		public abstract string ObjectType { get; }
 
-    public string Name
-    {
-        get { return _name; }
-    }
-    private string _description;
-    public string Description
-    {
-        get { return _description; }
-    }
+		public Geographical_object(string x, string y, string name, string desc)
+		{
+			X = x;
+			Y = y;
+			Name = name;
+			Description = desc;
+		}
 
-    public Geographical_object(string x, string y, string name, string desc)
-    {
-        this.x = x;
-        this.y = y;
-        _name = name;
-        _description = desc;
-    }
+		public virtual void GetInfo()
+		{
+			Console.WriteLine($"Географічний об'єкт: {ObjectType}");
+			Console.WriteLine($"Координата Х: {X}");
+			Console.WriteLine($"Координата У: {Y}");
+			Console.WriteLine($"Назва: {Name}");
+			Console.WriteLine($"Опис: {Description}");
+		}
+	}
 
-    public virtual void GetInfo()
-    {
-        
-    }
+	public class River : Geographical_object
+	{
+		private decimal _flow_rate;
+		private decimal _total_length;
+		public override string ObjectType => @"Річка";
 
-    public void GetSimpleInfo() // method to avoid duplication
-    {
-        Console.WriteLine($"Координата Х: {x}");
-        Console.WriteLine($"Координата У: {y} ");
-        Console.WriteLine($"Назва: {Name}");
-        Console.WriteLine($"Опис: {Description}");
-    }
-}
+		public River(string x, string y, string name, string desc, decimal flowRate, decimal totalLength) : base(x, y, name, desc)
+		{
+			_flow_rate = flowRate;
+			_total_length = totalLength;
+		}
 
-public class River : Geographical_object
-{
-    private decimal _flow_rate;
-    private decimal _total_length;
+		public override void GetInfo()
+		{
+			base.GetInfo();
 
-    public River(string x, string y, string name, string desc, decimal flowRate, decimal totalLength) : base(x, y, name, desc)
-    {
-        _flow_rate = flowRate;
-        _total_length = totalLength;
-    }
-    public override void GetInfo()
-    {
-        Console.WriteLine("Географічний об'єкт: Річка");
-        GetSimpleInfo();
-        
-        Console.WriteLine($"Швидкість течії (см/с): {_flow_rate} ");
-        Console.WriteLine($"Загальна довжина: {_total_length} км");
-        Console.WriteLine("");
-    }
-    
-}
+			Console.WriteLine($"Швидкість течії (см/с): {_flow_rate} ");
+			Console.WriteLine($"Загальна довжина: {_total_length} км");
+			Console.WriteLine();
+		}
 
-public class Mountain : Geographical_object
-{
-    public decimal _peak;
-    public Mountain(string x, string y, string name, string desc, decimal peak) : base(x, y, name, desc)
-    {
-        _peak = peak;
-    }
-    public override void GetInfo()
-    {
-        Console.WriteLine("Географічний об'єкт: Гора");
-        GetSimpleInfo(); 
-        
-        Console.WriteLine($"Найвища точка: {_peak} метрів");
-        Console.WriteLine("");
-    }
-}
+	}
+
+	public class Mountain : Geographical_object
+	{
+		public decimal Peak { get; }
+		public override string ObjectType => @"Гора";
+		public Mountain(string x, string y, string name, string desc, decimal peak) : base(x, y, name, desc)
+		{
+			Peak = peak;
+		}
+		public override void GetInfo()
+		{
+			base.GetInfo();
+
+			Console.WriteLine($"Найвища точка: {Peak} метрів");
+			Console.WriteLine();
+		}
+	}
