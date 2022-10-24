@@ -4,11 +4,12 @@ namespace Homework_2;
 public abstract class Worker
 {
     public string Name { get; }
-    public string Position { get; set; }
-    public List<string> WorkDay = new List<string>();
+    public string Position { get; protected set; }
+    public List<string> WorkDay { get; private set; }
     protected Worker(string name)
     {
         Name = name;
+        WorkDay = new List<string>();
     }
 
     protected void Call()
@@ -37,26 +38,26 @@ public class Developer : Worker
         Position = "Розробник";
         FillWorkDay();
     }
-
+/*перевизначення метода FillWorkDay(), в якому послідовно викликаються методи:
+WriteCode() викликається рандомну кількість разів (від 1 до 3),
+Call(),
+Relax(),
+WriteCode() викликається рандомну кількість разів (від 2 до 5).
+*/
     public override void FillWorkDay()
     {
-        int RandWrite = rand.Next(1, 3);
-        int RandCall = rand.Next(2, 5);
-        int RandRelax = rand.Next(2, 5);
-        int RandWriteAgain = rand.Next(2, 5);
-        
-        for(int i=1;i<=RandWrite;i++) WriteCode();
-        
-        for (int i = 1; i <= RandCall; i++) Call();
-        
-        for (int i = 1; i <= RandRelax; i++) Relax();
-        
-        for (int i = 1; i <= RandWriteAgain; i++) WriteCode();
+        for(int i=1;i<=rand.Next(1, 3);i++)
+            WriteCode();
+        Call();
+        Relax();        
+        for (int i = 1; i <= rand.Next(2, 5); i++)
+            WriteCode();
     }
 }
 
 public class Manager : Worker
 {
+    // помилка в задачі, очкільки змінна не використовується - її видаляємо
     private Random rand = new Random();
 
     public Manager(string name) : base(name)
@@ -103,23 +104,28 @@ public class Team
         {
             Console.WriteLine("Workers are absent");
         }
-        Console.WriteLine("");
+        // можна без порожнього рядка
+        Console.WriteLine();
     }
 
     public void ShowDetailedInfo()
     {
+        // TODO - майже 100% дублювання кода з методом ShowInfo
+        // варто створити загальний приватний метод, а відмінне писати в конкретному методі
         Console.WriteLine($"Group name: {_name}");
         if (_coworkers.Count > 0)
         {
             Console.WriteLine("Workers:");
-            foreach (var worker in _coworkers) Console.WriteLine($"{worker.Name} - {worker.Position} - {String.Join(", ",worker.WorkDay)}" );
+            // у випадку використання методів для string, варто використовувати саме його, а не String (рекомендація останніх років)
+            foreach (var worker in _coworkers) Console.WriteLine($"{worker.Name} - {worker.Position} - {string.Join(", ",worker.WorkDay)}" );
         }
         else
         {
             Console.WriteLine("Workers are absent");
         }
         
-        Console.WriteLine("");
+        // можна без порожнього рядка
+        Console.WriteLine();
     }
     
 }
