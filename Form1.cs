@@ -13,11 +13,12 @@ namespace WindowsFormsApp2
     
     public partial class Form1 : Form
     {
-        public List<Book> books { get; set; } = new List<Book>();
-        public static Form1 form1instance;
+        public List<Book> Books { get; private set; } = new List<Book>();
+        public static Form1 Form1Instance { get; private set; }
         public Form1()
         {
             InitializeComponent();
+            dataGridView.RowHeadersVisible = false;
             form1instance = this;
         }
         private void Form1_Load(object sender, EventArgs e)
@@ -26,7 +27,6 @@ namespace WindowsFormsApp2
             books.Add(new Book(1, "Шерлок Холмс", "А-БА-БА-ГА-ЛА-МА-ГА",750,true));
             books.Add(new Book(2, "Паскудна звістка", "Фабула",222,false));
             bindingSource1.DataSource = books;
-            dataGridView.RowHeadersVisible = false;
         }
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
@@ -35,6 +35,17 @@ namespace WindowsFormsApp2
         }
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
+        // TODO - можна значно простіше в цьому випадку
+        
+			if (dataGridView.SelectedCells.Count > 0)
+			{
+				bindingSource1.RemoveCurrent();
+			}
+			else
+			{
+				// MessageBox.Show(
+			}
+            /*
             try
             {
                 int rowIndex = dataGridView.CurrentCell.RowIndex; //find rowIndex
@@ -47,7 +58,7 @@ namespace WindowsFormsApp2
             catch (NullReferenceException ex)
             {
                 MessageBox.Show("Таблиця пуста","Інформація", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
+            }*/
         }
     }
 }
